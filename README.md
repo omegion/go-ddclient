@@ -9,27 +9,28 @@ GO CLI Application Template
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/github/workflow/status/omegion/go-cli-template/Test" alt="Test"></a>
-    <img src="https://coveralls.io/repos/github/omegion/go-cli-template/badge.svg?branch=master" alt="Coverall"></a>
-    <img src="https://goreportcard.com/badge/github.com/omegion/go-ddclient-template" alt="Report"></a>
-    <a href="http://pkg.go.dev/github.com/omegion/go-ddclient-template"><img src="https://img.shields.io/badge/pkg.go.dev-doc-blue" alt="Doc"></a>
-    <a href="https://github.com/omegion/go-ddclient-template/blob/master/LICENSE"><img src="https://img.shields.io/github/license/omegion/go-cli-template" alt="License"></a>
+    <img src="https://img.shields.io/github/workflow/status/omegion/go-ddclient/Test" alt="Test"></a>
+    <img src="https://coveralls.io/repos/github/omegion/go-ddclient/badge.svg?branch=master" alt="Coverall"></a>
+    <img src="https://goreportcard.com/badge/github.com/omegion/go-ddclient" alt="Report"></a>
+    <a href="http://pkg.go.dev/github.com/omegion/go-ddclient"><img src="https://img.shields.io/badge/pkg.go.dev-doc-blue" alt="Doc"></a>
+    <a href="https://github.com/omegion/go-ddclient/blob/master/LICENSE"><img src="https://img.shields.io/github/license/omegion/go-ddclient" alt="License"></a>
 </p>
 
 ```shell
-Go CLI application template for Go projects.
+Dynamic DNS Client CLI application to keep DNS record updated.
 
 Usage:
-  go-cli [command]
+  ddclient [command]
 
 Available Commands:
   help        Help about any command
+  set         Sets DNS record to current IP address.
   version     Print the version/build number
 
 Flags:
-  -h, --help   help for go-cli
+  -h, --help   help for ddclient
 
-Use "go-cli [command] --help" for more information about a command.
+Use "ddclient [command] --help" for more information about a command.
 ```
 
 ## Requirements

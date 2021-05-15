@@ -2,9 +2,11 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/cloudflare/cloudflare-go"
+	log "github.com/sirupsen/logrus"
 )
 
 //nolint:lll // go generate is ugly.
@@ -44,6 +46,8 @@ func (a CloudflareAPI) SetRecord(ctx context.Context, record DNSRecord) error {
 		return err
 	}
 
+	log.Debugln(fmt.Sprintf("Cloudflare zone id %s received.", zoneID))
+
 	cRecord := cloudflare.DNSRecord{
 		Type: "A",
 		Name: record.Name,
@@ -55,6 +59,8 @@ func (a CloudflareAPI) SetRecord(ctx context.Context, record DNSRecord) error {
 		return err
 	}
 
+	log.Debugln(fmt.Sprintf("There are %d existing records for zone id %s.", len(existsRecords), zoneID))
+
 	cRecord.Content = record.Value
 
 	if len(existsRecords) > 0 {
@@ -62,6 +68,8 @@ func (a CloudflareAPI) SetRecord(ctx context.Context, record DNSRecord) error {
 		if err != nil {
 			return err
 		}
+
+		log.Debugln(fmt.Sprintf("DNS record %s updated with %s value.", cRecord.Name, cRecord.Content))
 
 		return nil
 	}
