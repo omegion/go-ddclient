@@ -34,7 +34,7 @@ jobs:
           password: ${{ steps.secrets.outputs.GITHUB_REGISTRY_TOKEN }}
 
       - name: Build and push to GitHub for AMD64
-        id: github_build
+        id: github_build_amd64
         uses: docker/build-push-action@v2
         with:
           context: ./
@@ -45,7 +45,7 @@ jobs:
           tags: ghcr.io/omegion/ddclient:latest,ghcr.io/omegion/ddclient:${{ steps.get_version.outputs.VERSION }}
 
       - name: Build and push to GitHub for ARM64
-        id: github_build
+        id: github_build_arm64
         uses: docker/build-push-action@v2
         with:
           context: ./
