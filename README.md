@@ -33,6 +33,18 @@ Flags:
 Use "ddclient [command] --help" for more information about a command.
 ```
 
+## Run with Docker
+
+```shell
+export CF_API_KEY=<YOUR_KEY>
+docker run -e "CF_API_KEY=${CF_API_KEY}" ghcr.io/omegion/ddclient:v0.2.0 \
+ set \
+ --record=pi-1.omegion.dev \
+ --zone=omegion.dev  \
+ --dns-provider=cloudflare \
+ --logLevel debug
+```
+
 ## Requirements
 
 * Req 1
