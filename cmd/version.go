@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/omegion/go-cli/pkg/info"
+	"github.com/omegion/go-ddclient/internal/info"
 
 	"github.com/spf13/cobra"
 )

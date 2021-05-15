@@ -11,9 +11,9 @@ GO CLI Application Template
 <p align="center">
     <img src="https://img.shields.io/github/workflow/status/omegion/go-cli-template/Test" alt="Test"></a>
     <img src="https://coveralls.io/repos/github/omegion/go-cli-template/badge.svg?branch=master" alt="Coverall"></a>
-    <img src="https://goreportcard.com/badge/github.com/omegion/go-cli-template" alt="Report"></a>
-    <a href="http://pkg.go.dev/github.com/omegion/go-cli-template"><img src="https://img.shields.io/badge/pkg.go.dev-doc-blue" alt="Doc"></a>
-    <a href="https://github.com/omegion/go-cli-template/blob/master/LICENSE"><img src="https://img.shields.io/github/license/omegion/go-cli-template" alt="License"></a>
+    <img src="https://goreportcard.com/badge/github.com/omegion/go-ddclient-template" alt="Report"></a>
+    <a href="http://pkg.go.dev/github.com/omegion/go-ddclient-template"><img src="https://img.shields.io/badge/pkg.go.dev-doc-blue" alt="Doc"></a>
+    <a href="https://github.com/omegion/go-ddclient-template/blob/master/LICENSE"><img src="https://img.shields.io/github/license/omegion/go-cli-template" alt="License"></a>
 </p>
 
 ```shell
