@@ -1,18 +1,20 @@
 export PATH := $(abspath ./vendor/bin):$(PATH)
 
-BASE_PACKAGE_NAME  = github.com/omegion/go-ddclient
-GIT_VERSION = $(shell git describe --tags --always 2> /dev/null || echo 0.0.0)
-LDFLAGS            = -ldflags "-X $(BASE_PACKAGE_NAME)/pkg/info.Version=$(GIT_VERSION)"
-BUFFER            := $(shell mktemp)
-REPORT_DIR         = dist/report
-COVER_PROFILE      = $(REPORT_DIR)/coverage.out
+BASE_PACKAGE_NAME	= github.com/omegion/go-ddclient
+GIT_VERSION			= $(shell git describe --tags --always 2> /dev/null || echo 0.0.0)
+LDFLAGS            	= -ldflags "-X $(BASE_PACKAGE_NAME)/pkg/info.Version=$(GIT_VERSION)"
+BUFFER     			:= $(shell mktemp)
+REPORT_DIR         	= dist/report
+COVER_PROFILE      	= $(REPORT_DIR)/coverage.out
+ARCH				= "amd64"
 
 .PHONY: build
 build:
 	CGO_ENABLED=0 go build $(LDFLAGS) -installsuffix cgo -o dist/ddclient main.go
 
 build-for-container:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -a -installsuffix cgo -o dist/ddclient-linux main.go
+	@echo $(ARCH)
+	CGO_ENABLED=0 GOOS=linux GOARCH=$(ARCH) go build $(LDFLAGS) -a -installsuffix cgo -o dist/ddclient-linux main.go
 
 .PHONY: lint
 lint:

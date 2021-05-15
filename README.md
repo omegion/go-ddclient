@@ -37,7 +37,7 @@ Use "ddclient [command] --help" for more information about a command.
 
 ```shell
 export CF_API_KEY=<YOUR_KEY>
-docker run -e "CF_API_KEY=${CF_API_KEY}" ghcr.io/omegion/ddclient:v0.2.0 \
+docker run -e "CF_API_KEY=${CF_API_KEY}" ghcr.io/omegion/ddclient:latest \
  set \
  --record=pi-1.omegion.dev \
  --zone=omegion.dev  \

@@ -3,6 +3,8 @@ ARG FROM_IMAGE=alpine:3.12
 
 FROM golang:${GO_VERSION} AS builder
 
+ARG ARCH=amd64
+
 LABEL org.opencontainers.image.source="https://github.com/omegion/go-ddclient"
 
 WORKDIR /app
@@ -15,7 +17,7 @@ RUN apk update && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/tmp/*
 
-RUN make build-for-container
+RUN make build-for-container ARCH=$ARCH
 
 FROM ${FROM_IMAGE}
 
