@@ -39,8 +39,8 @@ Use "ddclient [command] --help" for more information about a command.
 export CF_API_KEY=<YOUR_KEY>
 docker run -e "CF_API_KEY=${CF_API_KEY}" ghcr.io/omegion/ddclient:latest \
  set \
- --record=pi-1.omegion.dev \
- --zone=omegion.dev  \
+ --record=test.example.com \
+ --zone=example.com  \
  --dns-provider=cloudflare \
  --logLevel debug
 ```
