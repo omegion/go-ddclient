@@ -38,7 +38,6 @@ func setupAddCommand(cmd *cobra.Command) {
 	cmd.Flags().Bool("daemon", false, "Daemon")
 }
 
-//nolint:funlen // some commands can be longer.
 // Set sets DNS record with given provider and parameters.
 func Set() *cobra.Command {
 	cmd := &cobra.Command{
@@ -64,40 +63,35 @@ func Set() *cobra.Command {
 				return err
 			}
 
-			ipAddress := ip.IP{
-				Client:   &http.Client{},
-				Provider: IPProvider,
-			}
+			ipAddress := ip.IP{Client: &http.Client{}, Provider: IPProvider}
 
 			if daemon {
-				ticker := time.NewTicker(time.Duration(interval) * time.Minute)
-				quit := make(chan struct{})
-				go func() {
+				errChan := make(chan error)
+				go func(
+					ctx context.Context,
+					recordName,
+					zoneName string,
+					ipAddress ip.IP,
+					api provider.API,
+				) {
 					for {
-						select {
-						case <-ticker.C:
-							record, setErr := setRecord(ctx, recordName, zoneName, ipAddress, api)
-							if err != nil {
-								log.Fatal(setErr)
-								close(quit)
-							}
-
-							log.Infoln(fmt.Sprintf("Record %s set to %s in zone %s.", record.Name, record.Value, record.Zone.Name))
-						case <-quit:
-							ticker.Stop()
-							return
+						err = setRecord(ctx, recordName, zoneName, ipAddress, api)
+						if err != nil {
+							errChan <- err
+							break
 						}
+
+						time.Sleep(time.Duration(interval) * time.Second)
 					}
-				}()
-				select {}
+				}(ctx, recordName, zoneName, ipAddress, api)
+
+				return <-errChan
 			}
 
-			record, err := setRecord(ctx, recordName, zoneName, ipAddress, api)
+			err = setRecord(ctx, recordName, zoneName, ipAddress, api)
 			if err != nil {
 				return err
 			}
-
-			log.Infoln(fmt.Sprintf("Record %s set to %s in zone %s.", record.Name, record.Value, record.Zone.Name))
 
 			return nil
 		},
@@ -109,13 +103,12 @@ func Set() *cobra.Command {
 }
 
 func decideDNSProvider(name string) (provider.API, error) {
-	//nolint:gocritic // will be extended soon.
 	switch name {
 	case "cloudflare":
 		return provider.SetupCloudflareAPI()
+	default:
+		return provider.CloudflareAPI{}, &provider.NotSupported{Name: name}
 	}
-
-	return provider.CloudflareAPI{}, &provider.NotSupported{Name: name}
 }
 
 func decideIPProvider(name string) (ip.Provider, error) {
@@ -133,10 +126,10 @@ func setRecord(
 	zoneName string,
 	ipAddress ip.IP,
 	api provider.API,
-) (provider.DNSRecord, error) {
+) error {
 	err := ipAddress.Check()
 	if err != nil {
-		return provider.DNSRecord{}, err
+		return err
 	}
 
 	record := provider.DNSRecord{
@@ -149,8 +142,10 @@ func setRecord(
 
 	err = api.SetRecord(ctx, record)
 	if err != nil {
-		return provider.DNSRecord{}, err
+		return err
 	}
 
-	return record, nil
+	log.Infoln(fmt.Sprintf("Record %s set to %s in zone %s.", record.Name, record.Value, record.Zone.Name))
+
+	return nil
 }
