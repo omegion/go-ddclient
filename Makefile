@@ -2,7 +2,7 @@ export PATH := $(abspath ./vendor/bin):$(PATH)
 
 BASE_PACKAGE_NAME	= github.com/omegion/go-ddclient
 GIT_VERSION			= $(shell git describe --tags --always 2> /dev/null || echo 0.0.0)
-LDFLAGS            	= -ldflags "-X $(BASE_PACKAGE_NAME)/pkg/info.Version=$(GIT_VERSION)"
+LDFLAGS            	= -ldflags "-X $(BASE_PACKAGE_NAME)/internal/info.Version=$(GIT_VERSION)"
 BUFFER     			:= $(shell mktemp)
 REPORT_DIR         	= dist/report
 COVER_PROFILE      	= $(REPORT_DIR)/coverage.out
@@ -48,4 +48,4 @@ release: build
 .PHONY: docker-image
 docker-image:
 	@echo "Building Docker Image"
-	docker buildx build --platform linux/amd64,linux/arm64 -t ddclient .
+	docker buildx build -t ddclient --platform linux/amd64,linux/arm64 . --output=type=docker

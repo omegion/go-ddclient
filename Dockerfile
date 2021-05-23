@@ -3,7 +3,6 @@ ARG FROM_IMAGE=alpine:3.12
 
 FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION} AS builder
 
-ARG ARCH=amd64
 ARG TARGETOS
 ARG TARGETARCH
 

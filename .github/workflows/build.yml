@@ -46,8 +46,8 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/omegion/ddclient:latest,ghcr.io/omegion/ddclient:${{ steps.get_version.outputs.VERSION }}
+          platforms: linux/amd64,linux/arm64
 
       - name: Build Changelog
         id: github_release

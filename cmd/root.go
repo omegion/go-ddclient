@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-//nolint:gochecknoglobals // go generate is ugly.
+//nolint:gochecknoglobals // for root cmd.
 var rootCmd = &cobra.Command{
 	Use:          "ddclient",
 	Short:        "Dynamic DNS Client CLI application",
