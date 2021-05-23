@@ -23,6 +23,6 @@ RUN make build TARGETOS=$TARGETOS TARGETARCH=$TARGETARCH
 
 FROM ${FROM_IMAGE}
 
-COPY --from=builder /app/dist/ddclient-linux /bin/ddclient
+COPY --from=builder /app/dist/ddclient /bin/ddclient
 
 ENTRYPOINT ["ddclient"]
