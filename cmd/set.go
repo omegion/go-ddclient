@@ -81,7 +81,7 @@ func Set() *cobra.Command {
 							break
 						}
 
-						time.Sleep(time.Duration(interval) * time.Second)
+						time.Sleep(time.Duration(interval) * time.Minute)
 					}
 				}(ctx, recordName, zoneName, ipAddress, api)
 
