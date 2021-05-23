@@ -1,9 +1,11 @@
 ARG GO_VERSION=1.16-alpine3.12
 ARG FROM_IMAGE=alpine:3.12
 
-FROM golang:${GO_VERSION} AS builder
+FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION} AS builder
 
 ARG ARCH=amd64
+ARG TARGETOS
+ARG TARGETARCH
 
 LABEL org.opencontainers.image.source="https://github.com/omegion/go-ddclient"
 
@@ -17,7 +19,7 @@ RUN apk update && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/tmp/*
 
-RUN make build-for-container ARCH=$ARCH
+RUN make build TARGETOS=$TARGETOS TARGETARCH=$TARGETARCH
 
 FROM ${FROM_IMAGE}
 

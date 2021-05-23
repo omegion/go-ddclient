@@ -6,15 +6,12 @@ LDFLAGS            	= -ldflags "-X $(BASE_PACKAGE_NAME)/pkg/info.Version=$(GIT_V
 BUFFER     			:= $(shell mktemp)
 REPORT_DIR         	= dist/report
 COVER_PROFILE      	= $(REPORT_DIR)/coverage.out
-ARCH				= "amd64"
+TARGETOS			= "darwin"
+TARGETARCH			= "amd64"
 
 .PHONY: build
 build:
-	CGO_ENABLED=0 go build $(LDFLAGS) -installsuffix cgo -o dist/ddclient main.go
-
-build-for-container:
-	@echo $(ARCH)
-	CGO_ENABLED=0 GOOS=linux GOARCH=$(ARCH) go build $(LDFLAGS) -a -installsuffix cgo -o dist/ddclient-linux main.go
+	CGO_ENABLED=0 GOOS=$(TARGETOS) GOARCH=$(TARGETARCH) go build $(LDFLAGS) -a -installsuffix cgo -o dist/ddclient main.go
 
 .PHONY: lint
 lint:
@@ -42,8 +39,13 @@ cut-tag:
 	git push origin $(version)
 
 .PHONY: release
-release: build-for-container
+release: build
 	@echo "Releasing $(GIT_VERSION)"
 	docker build -t ddclient .
 	docker tag ddclient:latest omegion/ddclient:$(GIT_VERSION)
 	docker push omegion/ddclient:$(GIT_VERSION)
+
+.PHONY: docker-image
+docker-image:
+	@echo "Building Docker Image"
+	docker buildx build --platform linux/amd64,linux/arm64 -t ddclient .
