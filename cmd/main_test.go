@@ -19,9 +19,9 @@ func TestCommander_SetRootCommand(t *testing.T) {
 	commander := NewCommander()
 	commander.SetRootCommand()
 
-	assert.Equal(t, "vault-unseal", commander.Root.Use)
-	assert.Equal(t, "Vault Auto Unseal", commander.Root.Short)
-	assert.Equal(t, "CLI command to automatically unseal Vault", commander.Root.Long)
+	assert.Equal(t, "ddclient", commander.Root.Use)
+	assert.Equal(t, "Dynamic DNS Client CLI application", commander.Root.Short)
+	assert.Equal(t, "Dynamic DNS Client CLI application to keep DNS record updated.", commander.Root.Long)
 	assert.Equal(t, true, commander.Root.SilenceUsage)
 }
 
