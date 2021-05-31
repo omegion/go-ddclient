@@ -19,6 +19,8 @@ const (
 	recordName = "test.example.com"
 )
 
+func TestCloudflareAPI_Setup(t *testing.T) {}
+
 func TestCloudflareAPI_SetRecord_Create(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	ctx := context.Background()
