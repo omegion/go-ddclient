@@ -1,10 +1,10 @@
 <h1 align="center">
-GO CLI Application Template
+Dynamic DNS Client Tool
 </h1>
 
 <p align="center">
   <a href="https://omegion.dev" target="_blank">
-    <img width="180" src="https://cdn.logo.com/hotlink-ok/logo-social-sq.png" alt="logo">
+    <img width="180" src="https://ssh-manager.omegion.dev/img/logo.png" alt="logo">
   </a>
 </p>
 
@@ -36,7 +36,7 @@ Use "ddclient [command] --help" for more information about a command.
 ## Run with Docker
 
 ```shell
-export CF_API_KEY=<YOUR_KEY>
+export CF_API_KEY=<YOUR_API_KEY>
 docker run -e "CF_API_KEY=${CF_API_KEY}" ghcr.io/omegion/ddclient:latest \
  set \
  --record=test.example.com \
@@ -52,12 +52,7 @@ docker run -e "CF_API_KEY=${CF_API_KEY}" ghcr.io/omegion/ddclient:latest \
 
 ## What does it do?
 
-A template for Go CLI application.
-
-## How to use it
-
-* how 1
-* how 2
+Dynamic DNS Client is a tool to update a domain based on machine internet address.
 
 ## Improvements to be made
 
