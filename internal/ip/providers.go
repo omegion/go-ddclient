@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	google = "https://domains.google.com/checkip"
+	// GoogleURL is Google provider url for ip checks.
+	GoogleURL = "https://domains.google.com/checkip"
 )
 
 // Provider is an interface for IP providers.
@@ -38,7 +39,7 @@ type GoogleIPProvider struct {
 
 // NewGoogleIPProvider instantiate an IP provider.
 func NewGoogleIPProvider() *GoogleIPProvider {
-	providerURL, _ := url.Parse(google)
+	providerURL, _ := url.Parse(GoogleURL)
 
 	return &GoogleIPProvider{
 		Name: "google",

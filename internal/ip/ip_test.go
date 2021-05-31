@@ -2,6 +2,7 @@ package ip_test
 
 import (
 	"bytes"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -19,11 +20,10 @@ func TestCloudflareAPI_SetRecord_Update(t *testing.T) {
 	googleProvider := ip.NewGoogleIPProvider()
 
 	currentIPAddress := "8.8.8.8"
-	r := ioutil.NopCloser(bytes.NewReader([]byte(currentIPAddress)))
 
 	resp := http.Response{
 		StatusCode: 200,
-		Body:       r,
+		Body:       ioutil.NopCloser(bytes.NewReader([]byte(currentIPAddress))),
 	}
 
 	client.EXPECT().Get(googleProvider.GetURL().String()).Return(&resp, nil)
@@ -37,4 +37,52 @@ func TestCloudflareAPI_SetRecord_Update(t *testing.T) {
 
 	assert.Equal(t, nil, err)
 	assert.Equal(t, currentIPAddress, ipAddress.Address.String())
+}
+
+func TestCloudflareAPI_SetRecord_Update_Get_Error(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	client := mocks.NewMockHTTPClient(ctrl)
+	googleProvider := ip.NewGoogleIPProvider()
+
+	currentIPAddress := "8.8.8.8"
+
+	resp := http.Response{
+		StatusCode: 200,
+		Body:       ioutil.NopCloser(bytes.NewReader([]byte(currentIPAddress))),
+	}
+
+	client.EXPECT().Get(googleProvider.GetURL().String()).Return(&resp, errors.New("custom error"))
+
+	ipAddress := ip.IP{
+		Client:   client,
+		Provider: googleProvider,
+	}
+
+	err := ipAddress.Check()
+
+	assert.EqualError(t, err, "custom error")
+}
+
+func TestCloudflareAPI_SetRecord_Update_ExtractIP_Error(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	client := mocks.NewMockHTTPClient(ctrl)
+	googleProvider := ip.NewGoogleIPProvider()
+
+	currentIPAddress := "wrong8.8.8.8"
+
+	resp := http.Response{
+		StatusCode: 200,
+		Body:       ioutil.NopCloser(bytes.NewReader([]byte(currentIPAddress))),
+	}
+
+	client.EXPECT().Get(googleProvider.GetURL().String()).Return(&resp, nil)
+
+	ipAddress := ip.IP{
+		Client:   client,
+		Provider: googleProvider,
+	}
+
+	err := ipAddress.Check()
+
+	assert.EqualError(t, err, "invalid CIDR address: wrong8.8.8.8/24")
 }
