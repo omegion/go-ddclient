@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/omegion/go-ddclient/internal/ip"
-	"github.com/omegion/go-ddclient/internal/provider"
-
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+
+	"github.com/omegion/go-ddclient/internal/ip"
+	"github.com/omegion/go-ddclient/internal/provider"
 )
 
 // setupAddCommand sets default flags.
@@ -53,12 +53,12 @@ func Set() *cobra.Command {
 
 			ctx := context.Background()
 
-			IPProvider, err := decideIPProvider(IPProviderName)
+			IPProvider, err := ip.GetProvider(IPProviderName)
 			if err != nil {
 				return err
 			}
 
-			api, err := decideDNSProvider(DNSProvider)
+			api, err := provider.GetProvider(DNSProvider)
 			if err != nil {
 				return err
 			}
@@ -78,6 +78,7 @@ func Set() *cobra.Command {
 						err = setRecord(ctx, recordName, zoneName, ipAddress, api)
 						if err != nil {
 							errChan <- err
+
 							break
 						}
 
@@ -100,24 +101,6 @@ func Set() *cobra.Command {
 	setupAddCommand(cmd)
 
 	return cmd
-}
-
-func decideDNSProvider(name string) (provider.API, error) {
-	switch name {
-	case "cloudflare":
-		return provider.SetupCloudflareAPI()
-	default:
-		return provider.CloudflareAPI{}, &provider.NotSupported{Name: name}
-	}
-}
-
-func decideIPProvider(name string) (ip.Provider, error) {
-	providers := ip.AllProviders()
-	if prv, ok := providers[name]; ok {
-		return prv, nil
-	}
-
-	return ip.GoogleIPProvider{}, &ip.NotSupported{Name: name}
 }
 
 func setRecord(

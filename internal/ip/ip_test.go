@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/omegion/go-ddclient/internal/ip"
-	"github.com/omegion/go-ddclient/internal/ip/mocks"
-
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/omegion/go-ddclient/internal/ip"
+	"github.com/omegion/go-ddclient/internal/ip/mocks"
 )
 
 func TestCloudflareAPI_SetRecord_Update(t *testing.T) {

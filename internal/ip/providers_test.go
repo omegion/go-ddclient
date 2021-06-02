@@ -3,9 +3,9 @@ package ip_test
 import (
 	"testing"
 
-	"github.com/omegion/go-ddclient/internal/ip"
-
 	"github.com/stretchr/testify/assert"
+
+	"github.com/omegion/go-ddclient/internal/ip"
 )
 
 func TestAllProviders(t *testing.T) {
@@ -13,7 +13,10 @@ func TestAllProviders(t *testing.T) {
 		"google": ip.GoogleURL,
 	}
 
-	for _, prov := range ip.AllProviders() {
+	for name := range expectedProviders {
+		prov, err := ip.GetProvider(name)
+		assert.NoError(t, err)
+
 		expectedIPAddress := []byte("8.8.8.8")
 
 		ipAddress, err := prov.ExtractIP(expectedIPAddress)
@@ -28,4 +31,11 @@ func TestAllProviders(t *testing.T) {
 
 		assert.EqualError(t, err, "invalid CIDR address: wrong8.8.8.8/24")
 	}
+}
+
+func TestAllProviders_Failure(t *testing.T) {
+	provider, err := ip.GetProvider("unknown-provider")
+
+	assert.EqualError(t, err, "Provider unknown-provider not supported.")
+	assert.Equal(t, nil, provider)
 }

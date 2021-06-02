@@ -8,15 +8,15 @@ ARG TARGETARCH
 
 LABEL org.opencontainers.image.source="https://github.com/omegion/go-ddclient"
 
-WORKDIR /app
-
-COPY ./ /app
-
 RUN apk update && \
-  apk add ca-certificates gettext git make curl unzip && \
+  apk add ca-certificates gettext git make && \
   rm -rf /tmp/* && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/tmp/*
+
+WORKDIR /app
+
+COPY ./ /app
 
 RUN make build TARGETOS=$TARGETOS TARGETARCH=$TARGETARCH
 
