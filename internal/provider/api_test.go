@@ -19,12 +19,12 @@ func TestGetProvider(t *testing.T) {
 	}
 }
 
-//func TestGetProvider_Failure(t *testing.T) {
-//	expectedProviders := []string{
-//		"unknown",
-//	}
-//	for _, name := range expectedProviders {
-//		_, err := GetProvider(name)
-//		assert.EqualError(t, err, "Provider unknown not supported.")
-//	}
-//}
+func TestGetProvider_Failure(t *testing.T) {
+	expectedProviders := []string{
+		"unknown",
+	}
+	for _, name := range expectedProviders {
+		_, err := GetProvider(name)
+		assert.EqualError(t, err, "Provider unknown not supported.")
+	}
+}
