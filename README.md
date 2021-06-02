@@ -45,11 +45,6 @@ docker run -e "CF_API_KEY=${CF_API_KEY}" ghcr.io/omegion/ddclient:latest \
  --logLevel debug
 ```
 
-## Requirements
-
-* Req 1
-* Req 2
-
 ## What does it do?
 
 Dynamic DNS Client is a tool to update a domain based on machine internet address.
@@ -58,4 +53,3 @@ Dynamic DNS Client is a tool to update a domain based on machine internet addres
 
 * 100% test coverage.
 * Better covering for other features.
-
