@@ -1,7 +1,7 @@
 name: Test
 
 on:
-  push:
+  pull_request:
 
 jobs:
   test:
@@ -24,16 +24,16 @@ jobs:
         run: go test -v -covermode=count -coverprofile=coverage.out ./...
 
           #      - name: Convert coverage.out to coverage.lcov
-          #        uses: jandelgado/gcov2lcov-action@v1.0.8
-          #
-          #      - name: Coveralls
-          #        uses: coverallsapp/github-action@master
+        #        uses: jandelgado/gcov2lcov-action@v1.0.8
+        #
+        #      - name: Coveralls
+        #        uses: coverallsapp/github-action@master
         #        with:
         #          github-token: ${{ secrets.GITHUB_TOKEN }}
         #          path-to-lcov: coverage.lcov
 
   coveralls:
-    name: Test and coverage
+    name: Coveralls
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
@@ -48,6 +48,7 @@ jobs:
       - name: Install dependencies
         run: |
           go mod download
+
       - name: Run Unit tests
         run: |
           go test -race -covermode atomic -coverprofile=covprofile ./...
