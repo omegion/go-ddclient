@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"net"
 	"net/url"
-
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -20,15 +18,14 @@ type Provider interface {
 	GetURL() *url.URL
 }
 
-// AllProviders returns all supported IP providers.
-func AllProviders() map[string]Provider {
-	providers := make(map[string]Provider)
-
-	providers["google"] = NewGoogleIPProvider()
-
-	log.Debugln(fmt.Sprintf("%d IP provider(s) are loaded.", len(providers)))
-
-	return providers
+// GetProvider returns an IP provider with given name.
+func GetProvider(name string) (Provider, error) {
+	switch name {
+	case "google":
+		return NewGoogleIPProvider(), nil
+	default:
+		return nil, &NotSupported{Name: name}
+	}
 }
 
 // GoogleIPProvider is IP provider.

@@ -6,12 +6,12 @@ import (
 	"os"
 	"testing"
 
-	"github.com/omegion/go-ddclient/internal/provider"
-	"github.com/omegion/go-ddclient/internal/provider/mocks"
-
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/omegion/go-ddclient/internal/provider"
+	"github.com/omegion/go-ddclient/internal/provider/mocks"
 )
 
 const (
