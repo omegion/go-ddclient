@@ -23,14 +23,44 @@ jobs:
       - name: go test
         run: go test -v -covermode=count -coverprofile=coverage.out ./...
 
-      - name: Convert coverage.out to coverage.lcov
-        uses: jandelgado/gcov2lcov-action@v1.0.8
+          #      - name: Convert coverage.out to coverage.lcov
+          #        uses: jandelgado/gcov2lcov-action@v1.0.8
+          #
+          #      - name: Coveralls
+          #        uses: coverallsapp/github-action@master
+        #        with:
+        #          github-token: ${{ secrets.GITHUB_TOKEN }}
+        #          path-to-lcov: coverage.lcov
 
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
+  coveralls:
+    name: Test and coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: coverage.lcov
+          go-version: ^1.16
+        id: go
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          go mod download
+      - name: Run Unit tests
+        run: |
+          go test -race -covermode atomic -coverprofile=covprofile ./...
+
+      - name: Install goveralls
+        env:
+          GO111MODULE: off
+        run: go get github.com/mattn/goveralls
+
+      - name: Send coverage
+        env:
+          COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: goveralls -coverprofile=covprofile -service=github
 
   vet:
     name: go vet and lint
