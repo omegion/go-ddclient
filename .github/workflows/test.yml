@@ -32,6 +32,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: coverage.lcov
+          flag-name: Unit Test
 
   coveralls:
     name: Coveralls
